@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" packages="de.ku.log4j">
+    <Appenders>
+        <TelegramAppender name="TestTelegramAppender" telegramBotUserName="testBot" >      
+        	<BurstFilter level="Fatal" rate="1" maxBurst="10"/>
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </TelegramAppender> 
+    </Appenders>
+    <Loggers>
+        <Root level="All">
+            <AppenderRef ref="TestTelegramAppender" /> 
+        </Root>
+    </Loggers>
+</Configuration>

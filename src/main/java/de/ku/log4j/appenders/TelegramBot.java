@@ -1,15 +1,14 @@
 package de.ku.log4j.appenders;
 
-import org.telegram.telegrambots.meta.api.objects.Update;
-import java.util.Iterator;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.LongPollingBot;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
-import java.util.concurrent.ConcurrentHashMap;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
 public class TelegramBot extends TelegramLongPollingBot implements IMessageSink
 {

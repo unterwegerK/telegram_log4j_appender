@@ -4,7 +4,6 @@ import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 import org.apache.logging.log4j.core.config.plugins.PluginElement;
 import org.apache.logging.log4j.core.config.plugins.PluginAttribute;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.apache.logging.log4j.core.config.Property;
 import java.io.Serializable;
 import org.apache.logging.log4j.core.Layout;
@@ -24,18 +23,10 @@ public class TelegramAppender extends AbstractAppender
     		String password,
     		Filter filter, 
     		Layout<? extends Serializable> layout, 
-    		Property[] properties, 
-    		IMessageSink messageSink) {
-        super(name, filter, (Layout)layout, true, properties);
-        if (messageSink == null) {
-            try {
-                messageSink = (IMessageSink)new TelegramBot(telegramBotUserName, telegramBotToken, password);
-            }
-            catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
-        }
-        this.messageSink = messageSink;
+    		Property[] properties) {
+        super(name, filter, (Layout<? extends Serializable>)layout, true, properties);
+
+        this.messageSink = MessageSinkLocator.getMessageSink(telegramBotUserName, telegramBotToken, password);
     }
     
     @PluginFactory
@@ -44,9 +35,10 @@ public class TelegramAppender extends AbstractAppender
     		@PluginAttribute("telegramBotUserName") String telegramBotUserName, 
     		@PluginAttribute("telegramBotToken") String telegramBotToken,
     		@PluginAttribute("password") String password,
-    		@PluginElement("Filter") Filter filter, 
-    		Layout<? extends Serializable> layout) {
-        return new TelegramAppender(name, telegramBotUserName, telegramBotToken, password, filter, layout, null, null);
+    		@PluginElement("Filter") Filter filter,
+    		@PluginElement("layout") Layout<? extends Serializable> layout) {
+    	
+        return new TelegramAppender(name, telegramBotUserName, telegramBotToken, password, filter, layout, null);
     }
     
     public void append(final LogEvent event) {
